@@ -1,5 +1,5 @@
 % Reviewer 2; OpenReview ID: 4R1c
-% Original review text, followed by intentionally blank reply areas.
+% Original review text, followed by the author's supplied draft responses.
 \section{Reviewer 2 (\texttt{4R1c})}
 \label{reviewer:2}
 \noindent\textbf{Rating:} 5: Marginally below acceptance threshold\par
@@ -16,36 +16,38 @@ I agree that this is a meaningful problem: dense token-level supervision in OPD 
 \item Sec. 4.1 reports $(N_{\mathrm{eval}}=8)$ and a maximum of 300 tokens per rollout, but does not quantify the additional generation overhead per training step relative to standard OPD. It would be helpful to report the total rollout or generated-token budget and its ratio to standard OPD.
 \par\Needspace{6\baselineskip}
 \begin{responsebox}[frametitle={Response to W1}]
-% Write the response here. All response content is intentionally blank.
-\vspace*{2\baselineskip}
+% Edit the author response below. Reviewer text above is unchanged.
+We sincerely thank the reviewer. Due to time constraints, we analyzed six sampled batches. PR was evaluated for only 103/192 responses (53.6\%), as responses without successful segmentation or explicit ground-truth answer matches bypass PR estimation and remain unfiltered. Eligible responses averaged 214.8 short continuations (eight per non-final prefix, each capped at 300 new tokens), yielding 115.7 additional rollouts per original response overall, including padding. PR estimation and consistency checking incurred 118.4\% overhead relative to the inferred step-time baseline. We will report this breakdown and acknowledge the lack of compute-matched comparisons.
 \end{responsebox}
 
 \item My main concern is scalability and generalizability. The experiments only use DeepSeek-R1-Distill-Qwen-1.5B, and the training dataset \& evaluation also appear limited. This makes it difficult to assess whether the proposed method scales to larger or more recent models.
 \par\Needspace{6\baselineskip}
 \begin{responsebox}[frametitle={Response to W2}]
-% Write the response here. All response content is intentionally blank.
+% Edit the author response below. Reviewer text above is unchanged.
 \vspace*{2\baselineskip}
 \end{responsebox}
 
 \item On AIME 25, performance drops sharply from 25.83 to 12.15 when (q=50). Such a large degradation suggests that the optimal (q) may strongly depend on the noise level of the process-reward estimates, raising concerns about hyperparameter sensitivity.
 \par\Needspace{6\baselineskip}
 \begin{responsebox}[frametitle={Response to W3}]
-% Write the response here. All response content is intentionally blank.
-\vspace*{2\baselineskip}
+% Edit the author response below. Reviewer text above is unchanged.
+We thank the reviewer for this observation. We acknowledge the sensitivity to q, which controls the fraction of masked segments rather than tokens. Aggressive masking may remove useful supervision or amplify ranking errors, but the degradation cannot be attributed solely to PR noise. We will clarify this trade-off and explore token-level masking budgets or soft weighting to improve robustness.
 \end{responsebox}
 
 \item Unmasking OPD (arXiv:2605.10889) shows through token-level gradient alignment analysis that distillation guidance on correct rollouts "tends to become noisy." R\textsuperscript{2}-OPD uses rank conflicts ($\kappa_j$) to identify unreliable teacher signals, but the findings of Unmasking OPD suggest that such unreliability may be concentrated in later segments of correct trajectories rather than uniformly distributed. How do the authors view this observation in relation to their rank-conflict criterion?
 \par\Needspace{6\baselineskip}
 \begin{responsebox}[frametitle={Response to W4}]
-% Write the response here. All response content is intentionally blank.
-\vspace*{2\baselineskip}
+% Edit the author response below. Reviewer text above is unchanged.
+We thank the reviewer for this insightful observation. To investigate this, we conducted exploratory offline replay on 8 saved batches (256 trajectories). Among the 39 correctly answered trajectories with masked spans, 59.8\% of masked tokens occurred before the final third of the response, while the overlap with a late-only mask under an equal token budget was only 19.6\%. These results suggest that R\textsuperscript{2}-OPD does not simply truncate supervision in later positions. We agree that position can influence signal reliability; however, our rank-conflict criterion identifies local disagreements between reasoning progress and distillation loss, rather than assuming that unreliability is uniformly distributed or intrinsically tied to position. We will clarify this distinction while noting that masking is an operational proxy, not direct ground-truth evidence of signal unreliability.
 \end{responsebox}
 
 \item Prune-OPD and Teachability-Aware OPD have also, to some extent, explored reallocating distillation budgets based on signal reliability. Although their implementations differ from R\textsuperscript{2}-OPD, discussing these related approaches would help clarify the novelty and positioning of the proposed method.
 \par\Needspace{6\baselineskip}
 \begin{responsebox}[frametitle={Response to W5}]
-% Write the response here. All response content is intentionally blank.
-\vspace*{2\baselineskip}
+% Edit the author response below. Reviewer text above is unchanged.
+Thanks. Prune-OPD detects prefix drift and reallocates the training budget through reward down-weighting and rollout truncation, while Teachability-Aware OPD selects token positions according to local teacher--student compatibility and teachability. In contrast, R\textsuperscript{2}-OPD uses independently estimated reasoning progress to identify rank conflicts at the reasoning-span level, selectively masking conflicting supervision while retaining the original OPD objective. These methods share the motivation of selective supervision but employ different reliability criteria and intervention mechanisms.
+
+We will strengthen the related-work discussion to better articulate these distinctions and clarify that R\textsuperscript{2}-OPD complements, rather than replaces, existing reliability-aware approaches.
 \end{responsebox}
 
 \end{enumerate}
@@ -58,16 +60,15 @@ See Weaknesses 1, 2, 3. Happy to raise the score given more persuative experimen
 
 \par\Needspace{6\baselineskip}
 \begin{responsebox}[frametitle={Response to Q1}]
-% Write the response here. All response content is intentionally blank.
+% Edit the author response below. Reviewer text above is unchanged.
 \vspace*{2\baselineskip}
 \end{responsebox}
 
 \par\Needspace{12\baselineskip}
 \subsection*{Final Response for Submission}
-% Consolidate the final reply to this reviewer here before submission.
 \par\Needspace{9\baselineskip}
 \begin{responsebox}[frametitle={Final Response to Reviewer 2 (4R1c)},linecolor=finalgreen,backgroundcolor=finalfill]
-% Write the response here. All response content is intentionally blank.
+% Edit the author response below. Reviewer text above is unchanged.
 \vspace*{4\baselineskip}
 \end{responsebox}
 
