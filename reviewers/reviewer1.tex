@@ -68,8 +68,26 @@ In addition to the weakness,
 \item The evaluation results could benefit from avg@32 on AIME with different seeds, more benchmarks.
 \par\Needspace{6\baselineskip}
 \begin{responsebox}[frametitle={Response to Q1}]
-% Edit the author response below. Reviewer text above is unchanged.
-\vspace*{2\baselineskip}
+% Numbers are transcribed from the user's screenshot.
+% Dataset labels were not visible; do not assume benchmark names or years.
+32-sample results: avg@32 / pass@32 (\%).
+The two groups follow the order in the supplied table.
+
+\begin{center}
+\begin{tabular}{lcc}
+\hline
+Model & Group 1 & Group 2 \\
+\hline
+Student & 19.90/53.33 & 18.75/40.00 \\
+OPD & 26.56/63.33 & 20.21/43.33 \\
+R\textsuperscript{2}-OPD & 29.90/66.67 & 23.13/46.67 \\
+\hline
+\end{tabular}
+\end{center}
+
+R\textsuperscript{2}-OPD improves avg@32 over OPD by 3.34 and 2.92
+percentage points in the two groups, with pass@32 gains of about 3.3 points
+in both. These evaluations do not provide training-seed uncertainty estimates.
 \end{responsebox}
 
 \item Clear demonstration of segmentation and masking, e.g. the fraction of masked tokens that occur after the ground-truth answer first appears
@@ -99,7 +117,14 @@ In addition to the weakness,
 \subsection*{Final Response for Submission}
 \par\Needspace{9\baselineskip}
 \begin{responsebox}[frametitle={Final Response to Reviewer 1 (gURK)},linecolor=finalgreen,backgroundcolor=finalfill]
-% Edit the author response below. Reviewer text above is unchanged.
-\vspace*{4\baselineskip}
+% Consolidated response, using only supplied information; no new experiments promised.
+% Plain text length: 109 whitespace-separated words; 868 characters including spaces and paragraph breaks.
+R\textsuperscript{2}-OPD uses teacher-independent progress to filter span-level supervision through progress--distillation rank conflicts. Merging is intended to stabilize these comparisons; Lemma 1 and Proposition 2 support aggregation under their stated assumptions.
+
+The added 32-sample evaluations improve over OPD by 2.92--3.34 percentage points in avg@32 and about 3.3 in pass@32. GPQA-Diamond avg@4 gains are 1.01/1.52 points for Qwen2.5/Qwen3 (pass@4: +1.51/\ensuremath{-}0.50), extending the evidence beyond mathematics.
+
+E-/TIP-OPD may favor additional exploration, while IW-OPD may suppress later verification in long traces. These remain hypotheses. Our teacher shares the student's base and has additional RL post-training.
+
+We acknowledge the limited ablations and absence of controlled length/truncation analyses, post-answer masking statistics, and training-seed uncertainty estimates.
 \end{responsebox}
 

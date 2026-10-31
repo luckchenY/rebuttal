@@ -25,11 +25,15 @@ are retained. Only PDF extraction artifacts and mathematical typesetting have
 been normalized. Reviewer wording, including original spelling, is preserved.
 The author's 15 existing responses have been placed beneath their corresponding
 weaknesses by matching reviewer ID and comment text, rather than backup order.
-Five unanswered weaknesses, the specific rebuttal questions, and each review's
-green Final Response for Submission remain blank for collaborative drafting. The AI appendix
-also has response boxes for its weaknesses, suggestions, and minor issues.
-No new author arguments, factual claims, or aggregate replies have been drafted.
-The GPQA-Diamond Markdown table in the supplied response is typeset as a table.
+The five unanswered weaknesses remain blank for collaborative drafting.
+Reviewer 1 also includes the supplied 32-sample results and a concise consolidated
+Final Response for Submission. Dataset labels were absent from the supplied image;
+the working table preserves its two groups without inventing benchmark names.
+The consolidated response reports improvements across the two evaluations.
+The final responses for Reviewers 2-5 and other unwritten boxes remain blank.
+The AI appendix also retains blank response boxes. No additional experiments,
+truncation analyses, or seed statistics are claimed.
+The supplied GPQA-Diamond Markdown table is typeset as a table.
 
 ## Edit together in Overleaf
 
