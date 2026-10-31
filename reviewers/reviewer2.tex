@@ -1,0 +1,33 @@
+% Reviewer 2; OpenReview ID: 4R1c
+% Original review text. Author responses have not been drafted.
+\section{Reviewer 2 (\texttt{4R1c})}
+\label{reviewer:2}
+\noindent\textbf{Rating:} 5: Marginally below acceptance threshold\par
+\noindent\textbf{Confidence:} 4: The reviewer is confident but not absolutely certain that the evaluation is correct
+
+\subsection*{Paper Summary}
+This paper argues that OPD's use of teacher similarity as a proxy for reasoning progress is unreliable, as teacher-derived rewards may conflict with actual reasoning progress. The authors propose R\textsuperscript{2}-OPD, which estimates process rewards from on-policy rollouts, merges sign-consistent spans, and compares process-reward rankings with segment-level KL rankings. The top-q segments with the largest ranking conflicts are then masked.
+
+\subsection*{Strengths}
+I agree that this is a meaningful problem: dense token-level supervision in OPD does not necessarily reflect reasoning progress. Figure 2 presents a concrete and convincing failure mode, where regressive segments actually have lower KL divergence. Intuitively, using sampling-based process rewards as a teacher-independent reference to identify and mask unreliable teacher signals seems reasonable.
+
+\subsection*{Weaknesses}
+\begin{enumerate}
+\item Sec. 4.1 reports $(N_{\mathrm{eval}}=8)$ and a maximum of 300 tokens per rollout, but does not quantify the additional generation overhead per training step relative to standard OPD. It would be helpful to report the total rollout or generated-token budget and its ratio to standard OPD.
+\item My main concern is scalability and generalizability. The experiments only use DeepSeek-R1-Distill-Qwen-1.5B, and the training dataset \& evaluation also appear limited. This makes it difficult to assess whether the proposed method scales to larger or more recent models.
+\item On AIME 25, performance drops sharply from 25.83 to 12.15 when (q=50). Such a large degradation suggests that the optimal (q) may strongly depend on the noise level of the process-reward estimates, raising concerns about hyperparameter sensitivity.
+\item Unmasking OPD (arXiv:2605.10889) shows through token-level gradient alignment analysis that distillation guidance on correct rollouts "tends to become noisy." R\textsuperscript{2}-OPD uses rank conflicts ($\kappa_j$) to identify unreliable teacher signals, but the findings of Unmasking OPD suggest that such unreliability may be concentrated in later segments of correct trajectories rather than uniformly distributed. How do the authors view this observation in relation to their rank-conflict criterion?
+\item Prune-OPD and Teachability-Aware OPD have also, to some extent, explored reallocating distillation budgets based on signal reliability. Although their implementations differ from R\textsuperscript{2}-OPD, discussing these related approaches would help clarify the novelty and positioning of the proposed method.
+\end{enumerate}
+
+\subsection*{Justification of Recommendation}
+meaningful problem yet constrained by the outdated model \& dataset selection
+
+\subsection*{Specific Points of Feedback for Rebuttal}
+See Weaknesses 1, 2, 3. Happy to raise the score given more persuative experiments.
+
+% ------------------------------------------------------------------
+% Author response: leave blank until the collaborative drafting stage.
+% Uncomment the following heading when ready to write a response.
+% \subsection*{Author Response}
+% TODO: Draft the response to this reviewer here.

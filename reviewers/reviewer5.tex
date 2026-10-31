@@ -1,0 +1,45 @@
+% Reviewer 5; OpenReview ID: YgpD
+% Original review text. Author responses have not been drafted.
+\section{Reviewer 5 (\texttt{YgpD})}
+\label{reviewer:5}
+\noindent\textbf{Rating:} 6: Marginally above acceptance threshold\par
+\noindent\textbf{Confidence:} 4: The reviewer is confident but not absolutely certain that the evaluation is correct
+
+\subsection*{Paper Summary}
+This paper is about policy distillation, where a student model is trained by sampling its own responses and then pulling its token-level distribution toward a teacher model's distribution at every decoding step, using reverse KL divergence. The authors point out that this setup quietly assumes that being close to the teacher is the same thing as making good reasoning progress, and that assumption can break. A student span can depart from the teacher and still be the move that actually gets the problem solved, while a span that sounds just like the teacher can still be a wrong turn. Since standard policy distillation applies the same imitation pressure everywhere, it can end up punishing exactly the reasoning steps that are working and letting the unhelpful ones slide. To fix this, they propose R2 OPD. For each student response, they split it into reasoning segments using self-reflective discourse markers, estimate a solve probability at each segment boundary by sampling continuations and checking the final answer, and define a process reward as the change in solve probability across a segment. Adjacent segments with the same sign of process reward get merged into coarser units to reduce noise, and for each merged unit they also average the token-level KL loss. They then rank segments by process reward and by average KL loss within a response, and whenever a segment with higher progress also carries a higher KL loss than a segment with lower progress, that is treated as a local conflict. The most conflicting segments, up to some fixed masking ratio, get their distillation loss zeroed out entirely, so training simply stops pulling the student toward the teacher there instead of adding any new reward.
+
+\subsection*{Strengths}
+The motivating failure case is concrete rather than hypothetical. Figure 2 shows an actual example where a regressive reasoning step gets a smaller KL loss than the steps that correctly derive or recover the answer, so the reader can see exactly the kind of mismatch the paper is trying to fix rather than just taking the claim on faith.
+
+The intervention itself is conservative in a good way. It only removes supervision it has identified as unreliable; it never adds a brand new reward term or changes the direction of the underlying objective. That makes it easy to reason about what could go wrong, since the worst case is that some tokens get less training signal, not that the model gets actively pushed in some new wrong direction.
+
+There is real theoretical backing behind two of the design choices rather than just an intuition. Lemma 1 shows that summing process rewards over a merged run telescopes down to just the two endpoint estimates, so internal boundary noise cancels out. Proposition 2 gives a variance bound showing segment averaging of the KL loss shrinks noise as the segment gets longer under a fairly mild dependence assumption. That is a nicer level of rigor than most empirical filtering papers bother with.
+
+The two central design choices, the masking ratio and the merging step, both get a real ablation, and the merging ablation comes with its own diagnostic beyond just downstream accuracy. Figure 5 tracks the actual rank agreement between process reward and KL loss during training and shows merging raises it well above the random baseline for almost the whole run, which is a direct check that the mechanism is doing what it claims rather than only checking whether the final score went up.
+
+\subsection*{Weaknesses}
+\begin{enumerate}
+\item[W1] Three of the four cited recent baselines score below the untrained student itself, and this is never addressed. In Table 1, the plain Student baseline gets 29.67 avg@4 and 46.10 pass@4, but E OPD [1] gets 26.91 and 41.52, TIP OPD [2] gets 25.80 and 38.72, and IW OPD [3] gets 27.31 and 40.81, all clearly worse than doing no distillation at all. These three methods were each proposed in their own papers specifically to improve on plain on policy distillation, so it is quite surprising that in this paper's reimplementation they end up hurting the model relative to not training it. This could be a real property of these methods under this particular teacher and data setup, but it could just as easily be a sign that these baselines were not tuned or reproduced fairly, and the paper gives no discussion either way. Since R2 OPD's headline comparison rests on beating these same baselines, this is a fairly central concern rather than a side note.
+\item[W2] The benchmarks driving the main comparisons are small, and there is no measure of statistical spread anywhere. AIME 2024 and AIME 2025 each contain only 30 problems, so avg@4 on either one is an average over a small number of underlying items, and a swing of a few accuracy points can come down to one or two problems flipping. No seeds, no repeated runs, and no confidence intervals are reported for any of the main table or ablation numbers. This matters more here than usual because some of the internal ablation swings are enormous for a 30-problem benchmark; for instance, Table 3 shows removing sign-consistent merging drops AIME 2024 accuracy from 32.50 to 17.5, a fifteen-point swing from one design change. A swing that large on a benchmark that small is at least as consistent with high variance as with a real underlying effect, and without any variance reporting there is no way to tell the two apart.
+\item[W3] The added cost of process reward estimation is never quantified. Getting a process reward for a single training response requires sampling $N_{\mathrm{eval}}$ on policy continuations from every accepted segment boundary in that response, on top of the response generation itself, which is a nontrivial multiple of the generation cost that plain on policy distillation does not pay at all, and that lighter baselines like TIP OPD or IW OPD likely do not pay either since they mostly reweight signals that are already available from the forward pass. The paper does not report wall clock time, extra rollouts per response, or any other measure of this overhead anywhere, so a reader cannot judge whether the accuracy gain is worth what looks like a meaningfully more expensive training recipe.
+\end{enumerate}
+
+[1] Entropy-Aware On-Policy Distillation of Language Models.
+
+[2] Tip: Token importance in on-policy distillation.
+
+[3] On the Position Bias of On Policy Distillation.
+
+\subsection*{Justification of Recommendation}
+The mechanism itself is thoughtfully built, the theory around merging and averaging is a genuine plus, and the diagnostic in Figure 5 is good evidence that the method is doing what it says it does at the mechanism level.
+
+What pulls me toward the reject side of borderline is that the actual headline comparison, R2 OPD beating recent baselines, rests on baseline numbers that look questionable on their face, since three of the four comparison methods score below doing no distillation at all, and that is never explained. On top of that, the benchmarks used for essentially every number in the paper are small enough, and the internal ablation swings large enough, that without any variance reporting I cannot tell how much of the story is signal versus benchmark noise. The missing cost accounting is a smaller concern but adds to the sense that the practical picture is incomplete.
+
+\subsection*{Specific Points of Feedback for Rebuttal}
+Can you say more about how E OPD, TIP OPD, and IW OPD were configured and tuned in your setup, and offer any explanation for why all three score below the untrained student baseline in Table 1, given that each was originally proposed to improve over plain on policy distillation.
+
+% ------------------------------------------------------------------
+% Author response: leave blank until the collaborative drafting stage.
+% Uncomment the following heading when ready to write a response.
+% \subsection*{Author Response}
+% TODO: Draft the response to this reviewer here.

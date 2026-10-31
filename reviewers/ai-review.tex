@@ -1,0 +1,50 @@
+% AI review is kept separate from the five official human reviews.
+\section{AI Review}
+\label{reviewer:ai}
+\noindent\textit{Separate AI-generated review from the OpenReview export.}
+
+\subsection*{Synopsis of the paper}
+The paper studies a mismatch between teacher imitation and productive reasoning in on-policy distillation. It proposes R\textsuperscript{2}-OPD, which estimates progress from student continuations, merges spans with consistent progress, and masks teacher supervision where progress and teacher--student divergence rankings conflict. The process signal acts only as a reliability filter rather than a training reward. Experiments cover mathematical reasoning benchmarks, multiple model pairs, and several OPD baselines.
+
+\subsection*{Summary of Review}
+The paper identifies a meaningful limitation of teacher-similarity supervision and proposes a distinctive span-level filtering mechanism. However, Equation (3), which supplies the central conflict score, is not a KL divergence and can be negative, undermining its interpretation as teacher--student disagreement. The evidence for sign-consistent merging does not establish more reliable progress estimation and largely shows recovery from a harmful unmerged variant. Reported gains also cannot be attributed specifically to progress-conflict filtering because supervision- and masking-matched controls are absent. Published precedents narrow the novelty to combining relative-progress estimation with span-level OPD masking.
+
+\subsection*{Strengths}
+\begin{itemize}
+\item The distinction between imitation compatibility and reasoning progress is concretely motivated. Figure 2 illustrates how a productive alternative derivation can receive a larger divergence than a regressive but teacher-compatible span, making the targeted failure mode clear.
+\item The process signal is cleanly separated from the optimized objective. Equations (11)--(13) use within-response ordering to gate the original distillation loss, avoiding direct addition of signals with incomparable scales and preserving a modular OPD update.
+\item The empirical design has useful breadth within verifiable mathematics. Tables 1--2 cover two student--teacher pairs and several OPD variants, while Table 3 and Figures 4--5 expose substantial dependence on merging, masking strength, dataset, and metric rather than reporting only an aggregate result.
+\end{itemize}
+
+\subsection*{Weaknesses}
+\begin{itemize}
+\item Equation (3) does not define a KL divergence, although its segment average $\kappa_j$ drives every conflict decision. If $\alpha_t$ and $\beta_t$ are the student and teacher masses on $S_t$, the stated loss equals $D_{\mathrm{KL}}(q_t^S\parallel q_t^T) + \log(\alpha_t/\beta_t)$ and can be negative; its ordering can therefore reflect retained support mass rather than distributional disagreement, directly weakening Equations (11)--(12).
+\item The merging evidence does not establish that merging produces more accurate progress units. Figure 5 treats increased PR--KL agreement as reliability even though Equation (11) defines meaningful PR--KL disagreement as the target phenomenon; moreover, comparing Tables 1 and 3 shows that over 70\% of the reported 15.00 and 14.16 AIME gains over no-merging merely recover that variant's degradation below standard OPD. The evidence therefore shows that unmerged filtering is harmful, not that merging accurately denoises progress.
+\item The first process reward is not the claimed marginal progress because Equation (5) fixes $\hat{S}_0 = 0$ rather than estimating the prompt's solve probability. Although merged segment $j = 1$ is later excluded from conflict detection, its artificial nonnegative reward participates in sign-consistent merging and can absorb subsequent positive spans, changing boundaries, candidate counts, and masking decisions.
+\item The contribution is narrower than presented because its two principal ingredients have close published precedents. GenPRM considers the difference between rollout-derived success estimates at consecutive reasoning states (Zhao et al., 2026), while VOLD applies reward-guided masking to KL-based on-policy distillation (Bousselham et al., 2026); neither appears in the target paper's references, related work, or tables. The distinct contribution is therefore their span-level rank-conflict combination rather than either ingredient independently.
+\item The evaluation does not isolate the source of the gains. R\textsuperscript{2}-OPD uses ground-truth verifier supervision and eight additional continuations per evaluated boundary, but Tables 1--3 lack supervision- or compute-matched OPD, random masking with the same token budget, outcome-only masking, or direct process-reward filtering; additionally, removing merging changes segment counts and effective token masking.
+\item The reported margins lack uncertainty quantification. Table 1 improves over OPD by 2.51 aggregate avg@4 points and 4.46 pass@4 points, while Table 2's aggregate avg@4 gain is only 0.43; no training seeds, confidence intervals, or paired tests are reported. These margins cannot be separated from training and sampling variability as presented.
+\end{itemize}
+
+\subsection*{Suggestions for Improvement}
+\begin{itemize}
+\item A compact algorithm block should precede the derivation and explicitly show trajectory eligibility, original-to-merged indexing, ranked-pair construction, inconsistency accumulation, masking-budget calculation, and token masking. This would remove the need to reconstruct the operational procedure across Equations (5)--(13).
+\item The mechanism analysis could distinguish whether gains arise from masking the higher-progress/high-KL endpoint or the lower-progress/low-KL endpoint of a violation. Equation (12) assigns the same pairwise contribution to both, although these cases imply different accounts of why supervision is unreliable.
+\item Results could be stratified by segmentation success, answer-string eligibility, truncation status, number of merged spans, and actual masked-token fraction. These quantities determine where R\textsuperscript{2}-OPD operates and would connect the motivating trajectory categories to downstream improvements.
+\item Claims should be scoped to verifiable mathematical reasoning and the tested small models. The construction requires ground-truth answers, executable verifiers, and repeated student continuations, so conclusions about reasoning generally extend beyond the demonstrated setting.
+\end{itemize}
+
+\subsection*{Additional Details and Minor Issues}
+\begin{itemize}
+\item With $q = 30$, ceiling and exclusion of the first segment can mask half or more of the eligible segments when $n_i$ is small; Figure 4 should report actual masked-token fractions.
+\item Equation (5) evaluates intermediate states using 300-token answer-eliciting rollouts but the terminal state using the actual response's correctness, so $PR_M$ mixes different horizons and generation protocols.
+\item Table 3's displayed Olympiad values give 46.86\ensuremath{-}47.80=\ensuremath{-}0.94, rather than the reported \ensuremath{-}0.96, unless unrounded values were used.
+\item The aggregation producing values such as 43.44 AIME 2025 pass@4 in Table 1 and 18.75 avg@4 in Table 2 should be explained under the stated four-response protocol.
+\item Figure 1's answer-string category does not by itself establish a correct reasoning path or truncation caused by overthinking.
+\item Aggregated-process-reward notation changes around Equations (7), (11), and (12), and several local grammatical errors impede the otherwise linear presentation.
+\end{itemize}
+
+\subsection*{References}
+Bousselham, W., Kuehne, H., \& Schmid, C. (2026). VOLD: Reasoning transfer from LLMs to vision-language models via on-policy distillation. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (pp. 26209--26218). (openaccess.thecvf.com (\url{https://openaccess.thecvf.com/content/CVPR2026/html/Bousselham_VOLD_Reasoning_Transfer_from_LLMs_to_Vision-Language_Models_via_On-Policy_CVPR_2026_paper.html}))
+
+Zhao, J., Liu, R., Zhang, K., Zhou, Z., Gao, J., Li, D., Lyu, J., Qian, Z., Qi, B., Li, X., \& Zhou, B. (2026). GenPRM: Scaling test-time compute of process reward models via generative reasoning. Proceedings of the AAAI Conference on Artificial Intelligence, 40(41), 34932--34940. (ojs.aaai.org (\url{https://ojs.aaai.org/index.php/AAAI/article/view/40797}))

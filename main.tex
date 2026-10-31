@@ -1,27 +1,84 @@
-\documentclass{article}
-\usepackage{graphicx} % Required for inserting images
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=20mm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
 
-\title{rebuttal}
-\author{ycscutauto}
-\date{October 2026}
+\definecolor{linkblue}{HTML}{245579}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=linkblue,
+  urlcolor=linkblue,
+  pdftitle={Beyond Imitation -- Reviewer Comments},
+  pdfauthor={}
+}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.2em}
+\setlist{leftmargin=*,topsep=0.2em,itemsep=0.2em,parsep=0pt}
+\setlength{\emergencystretch}{2em}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Beyond Imitation}
+\fancyhead[R]{\small Reviewer Comments}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\raggedbottom
+
+\title{\Large Beyond Imitation: Filtering On-Policy Distillation\\
+by Reasoning Progress\\[0.65em]
+\LARGE Reviewer Comments}
+\author{}
+\date{}
 
 \begin{document}
-
 \maketitle
+\thispagestyle{fancy}
 
-\section{reviewer1}
+\textbf{AAAI 2027 -- Submission 11993}
 
+The five official human reviews are reproduced in their order in the supplied
+OpenReview PDF. Reviewer numbers are local labels for this working document;
+the original anonymous reviewer IDs are retained below.
+The separate AI review is included in Appendix~\ref{reviewer:ai}.
+Author responses will be drafted later.
 
-\section{reviewer2}
+\begin{center}
+\begin{tabular}{lccc}
+\hline
+Reviewer & OpenReview ID & Rating & Confidence \\
+\hline
+Reviewer 1 & \texttt{gURK} & 5 & 4 \\
+Reviewer 2 & \texttt{4R1c} & 5 & 4 \\
+Reviewer 3 & \texttt{XU6y} & 5 & 4 \\
+Reviewer 4 & \texttt{hTMj} & 2 & 4 \\
+Reviewer 5 & \texttt{YgpD} & 6 & 4 \\
+\hline
+\end{tabular}
+\end{center}
 
+\tableofcontents
 
-\section{reviewer3}
+% Each reviewer has a separate file for collaborative editing.
+\clearpage
+\input{reviewers/reviewer1}
+\clearpage
+\input{reviewers/reviewer2}
+\clearpage
+\input{reviewers/reviewer3}
+\clearpage
+\input{reviewers/reviewer4}
+\clearpage
+\input{reviewers/reviewer5}
 
-
-\section{reviewer4}
-
-
-
-\section{reviewer5}
+% Keep the AI review separate from the five official human reviewers.
+\clearpage
+\appendix
+\input{reviewers/ai-review}
 
 \end{document}

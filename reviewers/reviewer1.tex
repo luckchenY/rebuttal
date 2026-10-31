@@ -1,0 +1,43 @@
+% Reviewer 1; OpenReview ID: gURK
+% Original review text. Author responses have not been drafted.
+\section{Reviewer 1 (\texttt{gURK})}
+\label{reviewer:1}
+\noindent\textbf{Rating:} 5: Marginally below acceptance threshold\par
+\noindent\textbf{Confidence:} 4: The reviewer is confident but not absolutely certain that the evaluation is correct
+
+\subsection*{Paper Summary}
+This paper starts from the argument that in OPD the student model's per token level agreement with teacher model is not perfect way for improving its reasoning process, as a student's generation can be moving towards the correct solution while having a high KL due to a different distribution from the teacher's. This paper then presents R\textsuperscript{2}-OPD, which uses a teacher-independent progress signal only as a reliability filter on the distillation loss. By splitting the student model's thinking trajectories into multiple segments by a preset markers, and process the reward with segments that contributes to the final ground truth answer, this method improves reasoning-oriented OPD, especially on harder benchmarks.
+
+\subsection*{Strengths}
+\begin{itemize}
+\item This paper is well motivated and generally well written with a clear separation from distillation compatibility from reasoning progress, which targets the fact that OPD treats the former as a proxy for the latter and thus impacts the training efficiency.
+\item The method is straightforward on the design including segmentation methods and easy to adopt for other methods. Specifically on the segmentation, the progress signal acts as a gate when applies the rules, and falls back to OPD when not available, the conflicts inside response are also addressed.
+\item The experiments are well designed and clearly demonstrated, with Fig 1 showing student rollouts on DAPO that contain the answer but go unscored, which is a concrete argument that outcome-only filtering discards usable trajectories.On Fig 3-5 the paper also shows the configurations and ablations over segments merging strategy etc.
+\end{itemize}
+
+\subsection*{Weaknesses}
+\begin{itemize}
+\item This paper seems a combination of several existing works and some new components are not shown to be necessary through ablations like process reward or the process of filtering OPD supervision with the teacher-independent signal. It seems the genuine new components are mostly segmentation methods, conflict resolving rule and top-q masking, which are mostly heuristic and not compared with similar or simpler methods.
+\item The overall performance imprvements seem limited and specific to one benchmark family. In table 2 the gain is +0.43 avg@4, and over AIME25 avg@4 decreases.
+\item The evaluation design and results can be better explained. First of as the paper also suggests, only a small fraction of DAPO rollouts are scored, training at 7k tokens and evaluating at 8k might be truncating R1-Distill-1.5B responses as well, so shortening the responses will naturally improve the performance. Also it seems most baselines E-OPD, TIP-OPD, IW-OPD and Uni-OPD all score below the untrained student on AIME24, it might indicates the specific configuration favors the method in the paper. Moreover, the teacher model JustRL-DeepSeek-1.5B, is based on DeepSeek-R1-Distill-Qwen-1.5B, which comes with a low-divergence behavior and does not really reflect the motivation of this paper.
+\item The theory part is thin, Lemma 1 holds for fixed runs only which is natually too idealized. With prop.2, neither the 2 really analyzes the main contribution of the segmentation or masking strategy.
+\end{itemize}
+
+\subsection*{Justification of Recommendation}
+Based on the 3 weakness over limited performance improvements and evaluation design, I'm leaning towards a boarderline rejection.
+
+\subsection*{Specific Points of Feedback for Rebuttal}
+In addition to the weakness,
+
+\begin{itemize}
+\item The evaluation results could benefit from avg@32 on AIME with different seeds, more benchmarks.
+\item Clear demonstration of segmentation and masking, e.g. the fraction of masked tokens that occur after the ground-truth answer first appears
+\item Response length and truncation rate at 8k for student models over baselines
+\item Justification of hyperparameters and implementation method of the baselines
+\end{itemize}
+
+% ------------------------------------------------------------------
+% Author response: leave blank until the collaborative drafting stage.
+% Uncomment the following heading when ready to write a response.
+% \subsection*{Author Response}
+% TODO: Draft the response to this reviewer here.

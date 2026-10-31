@@ -1,0 +1,35 @@
+% Reviewer 3; OpenReview ID: XU6y
+% Original review text. Author responses have not been drafted.
+\section{Reviewer 3 (\texttt{XU6y})}
+\label{reviewer:3}
+\noindent\textbf{Rating:} 5: Marginally below acceptance threshold\par
+\noindent\textbf{Confidence:} 4: The reviewer is confident but not absolutely certain that the evaluation is correct
+
+\subsection*{Paper Summary}
+The paper targets the improvement of the on-policy distillation (OPD) method. Specifically, the paper proposes R\textsuperscript{2}-OPD, a reasoning-progress-aware filtering method for on-policy distillation. R\textsuperscript{2}-OPD estimates the progress made by intermediate reasoning segments through Monte Carlo continuation rollouts and verifier-based solve probabilities, and then compares the within-trajectory ranking induced by estimated reasoning progress with that induced by the teacher-student divergence. When the two rankings conflict, the method masks the corresponding distillation loss, aiming to prevent teacher imitation from penalizing productive but teacher-divergent reasoning steps. Experiments on mathematrical reasoning demonstrate the effectiveness of the proposed method.
+
+\subsection*{Strengths}
+\begin{itemize}
+\item The paper identifies a meaningful limitation of standard OPD, in which teacher supervision may not always align with genuine reasoning progress.
+\item The idea is well-motivated and easy to understand.
+\item The experiments include several relevant OPD baselines, including E-OPD, TIP-OPD, IW-OPD, and Uni-OPD.
+\end{itemize}
+
+\subsection*{Weaknesses}
+\begin{itemize}
+\item It seems that the proposed method introduces substantial computational overhead. Each eligible intermediate segment requires eight additional continuation rollouts, while responses can be thousands of tokens long. The paper does not report its training cost or provide compute-matched comparisons with other OPD methods.
+\item The proposed method requires annotated ground-truth answers and task-specific verifiers to estimate reasoning progress. It is therefore restricted to verifiable domains and may partly benefit from correctness information unavailable to standard OPD, which does not require ground-truth answers.
+\item The paper provides limited analysis of training dynamics. It would be useful to show how reasoning-progress estimates, teacher--progress ranking conflicts, masking rates, and downstream performance evolve throughout training, to better understand the proposed idea and method.
+\end{itemize}
+
+\subsection*{Justification of Recommendation}
+I assign a score of 5, as the paper presents a well-motivated idea and shows performance gains over standard OPD. However, there are core concerns regarding its reliance on ground-truth answers and verifiers, potentially substantial but unreported computational overhead. Addressing these issues with clearer efficiency analysis and broader evaluations would strengthen the paper.
+
+\subsection*{Specific Points of Feedback for Rebuttal}
+See above weaknesses.
+
+% ------------------------------------------------------------------
+% Author response: leave blank until the collaborative drafting stage.
+% Uncomment the following heading when ready to write a response.
+% \subsection*{Author Response}
+% TODO: Draft the response to this reviewer here.
