@@ -1,5 +1,5 @@
 % Reviewer 3; OpenReview ID: XU6y
-% Original review text. Author responses have not been drafted.
+% Original review text, followed by the author's supplied draft responses.
 \section{Reviewer 3 (\texttt{XU6y})}
 \label{reviewer:3}
 \noindent\textbf{Rating:} 5: Marginally below acceptance threshold\par
@@ -18,8 +18,26 @@ The paper targets the improvement of the on-policy distillation (OPD) method. Sp
 \subsection*{Weaknesses}
 \begin{itemize}
 \item It seems that the proposed method introduces substantial computational overhead. Each eligible intermediate segment requires eight additional continuation rollouts, while responses can be thousands of tokens long. The paper does not report its training cost or provide compute-matched comparisons with other OPD methods.
+\par\Needspace{6\baselineskip}
+\begin{responsebox}[frametitle={Response to W1}]
+% Edit the author response below. Reviewer text above is unchanged.
+We sincerely thank the reviewer. Due to time constraints, we analyzed six sampled batches. PR was evaluated for only 103/192 responses, as responses without successful segmentation or explicit ground-truth answer matches bypass PR estimation and remain unfiltered. Eligible responses averaged 214.8 short continuations (eight per non-final prefix, each capped at 300 new tokens), yielding 115.7 additional rollouts per original response overall, including padding. PR estimation and consistency checking incurred 118.4\% overhead relative to the inferred step-time baseline. We will report this breakdown and acknowledge the lack of compute-matched comparisons.
+\end{responsebox}
+
 \item The proposed method requires annotated ground-truth answers and task-specific verifiers to estimate reasoning progress. It is therefore restricted to verifiable domains and may partly benefit from correctness information unavailable to standard OPD, which does not require ground-truth answers.
+\par\Needspace{6\baselineskip}
+\begin{responsebox}[frametitle={Response to W2}]
+% Edit the author response below. Reviewer text above is unchanged.
+We thank the reviewer for highlighting this limitation. While R\textsuperscript{2}-OPD requires ground-truth answers and task-specific verifiers, its contribution goes beyond incorporating correctness information. Unlike methods that directly use outcome correctness to filter or reweight trajectories, R\textsuperscript{2}-OPD estimates the marginal progress of intermediate reasoning spans and compares its relative ranking with that of distillation losses. This enables fine-grained identification of locally conflicting teacher signals, rather than merely distinguishing correct from incorrect responses. We acknowledge the additional supervision requirement and will clarify the applicability limitations and explore verifier-free progress estimation in future work.
+\end{responsebox}
+
 \item The paper provides limited analysis of training dynamics. It would be useful to show how reasoning-progress estimates, teacher--progress ranking conflicts, masking rates, and downstream performance evolve throughout training, to better understand the proposed idea and method.
+\par\Needspace{6\baselineskip}
+\begin{responsebox}[frametitle={Response to W3}]
+% Edit the author response below. Reviewer text above is unchanged.
+We thank the reviewer for this helpful suggestion. Figure 5 provides an initial view of training dynamics, where improved PR--KL ranking agreement with sign-consistent merging illustrates the role of reasoning-progress estimates in identifying teacher-signal conflicts. We agree that further analysis would be valuable. We note that the masking ratio (q=30\%) remains fixed throughout training.
+\end{responsebox}
+
 \end{itemize}
 
 \subsection*{Justification of Recommendation}
@@ -28,8 +46,16 @@ I assign a score of 5, as the paper presents a well-motivated idea and shows per
 \subsection*{Specific Points of Feedback for Rebuttal}
 See above weaknesses.
 
-% ------------------------------------------------------------------
-% Author response: leave blank until the collaborative drafting stage.
-% Uncomment the following heading when ready to write a response.
-% \subsection*{Author Response}
-% TODO: Draft the response to this reviewer here.
+\par\Needspace{6\baselineskip}
+\begin{responsebox}[frametitle={Response to Q1},nobreak=true]
+% Edit the author response below. Reviewer text above is unchanged.
+\textit{[To be completed.]}\par\vspace{1em}
+\end{responsebox}
+
+\subsection*{Overall Response}
+\par\Needspace{6\baselineskip}
+\begin{responsebox}[frametitle={Overall Response to Reviewer 3 (XU6y)},nobreak=true]
+% Edit the author response below. Reviewer text above is unchanged.
+\textit{[To be completed.]}\par\vspace{1em}
+\end{responsebox}
+

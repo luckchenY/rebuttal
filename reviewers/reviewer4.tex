@@ -1,5 +1,5 @@
 % Reviewer 4; OpenReview ID: hTMj
-% Original review text. Author responses have not been drafted.
+% Original review text, followed by the author's supplied draft responses.
 \section{Reviewer 4 (\texttt{hTMj})}
 \label{reviewer:4}
 \noindent\textbf{Rating:} 2: Strong rejection\par
@@ -17,10 +17,40 @@ This paper proposes R2-OPD, a selective on-policy distillation method motivated 
 \subsection*{Weaknesses}
 \begin{enumerate}
 \item The method combines existing ideas from progress-based supervision and reward-guided distillation [1,2]. Its main distinction is using estimated progress to select individual reasoning spans, which appears to be a relatively narrow methodological extension.
+\par\Needspace{6\baselineskip}
+\begin{responsebox}[frametitle={Response to W1},nobreak=true]
+% Edit the author response below. Reviewer text above is unchanged.
+\textit{[To be completed.]}\par\vspace{1em}
+\end{responsebox}
+
 \item Both evaluated students are small Qwen-derived models. This makes it difficult to tell whether the gains extend beyond these particular models. Results on another model family, such as Llama, and larger students would be needed to support broader claims. All evaluations use a single response-length limit. The paper does not show whether the gains remain when longer reasoning is allowed. RG-OPD is closely related to the proposed method but is not included in the experiments [1]. Comparisons with the closest existing methods and simpler reward-based filters are needed.
+\par\Needspace{6\baselineskip}
+\begin{responsebox}[frametitle={Response to W2},nobreak=true]
+% Edit the author response below. Reviewer text above is unchanged.
+\textit{[To be completed.]}\par\vspace{1em}
+\end{responsebox}
+
 \item The filter relies on progress estimates from continuations limited to 300 tokens. It is unclear whether these short, answer-eliciting completions reliably reflect how much a reasoning step contributes to solving the problem. The paper does not examine how these estimates change with the continuation length or number of samples. Estimating progress requires additional generations from multiple prefixes of each eligible trajectory. The paper does not report the full cost of this procedure, so training each method for the same number of epochs does not establish equal resource use.
+\par\Needspace{6\baselineskip}
+\begin{responsebox}[frametitle={Response to W3}]
+% Edit the author response below. Reviewer text above is unchanged.
+We thank the reviewer for raising these concerns. Our answer-eliciting prompt (Appendix) explicitly instructs the model to answer directly based on the current prefix, rather than continue its reasoning. Thus, the 300-token limit is intended to elicit the answer, not a full reasoning continuation. Due to time constraints, we analyzed six sampled batches. PR was evaluated for only 103/192 responses (53.6\%), as responses without successful segmentation or explicit ground-truth answer matches bypass PR estimation and remain unfiltered. Eligible responses averaged 214.8 short continuations (eight per non-final prefix, each capped at 300 new tokens), yielding 115.7 additional rollouts per original response overall, including padding. PR estimation and consistency checking incurred 118.4\% overhead relative to the inferred step-time baseline. We will report this breakdown and acknowledge the lack of compute-matched comparisons.
+\end{responsebox}
+
 \item The theory explains how aggregation can cancel some estimation errors and reduce variance under its assumptions. It does not address how using noisy progress scores to choose the segments affects these results.
+\par\Needspace{6\baselineskip}
+\begin{responsebox}[frametitle={Response to W4}]
+% Edit the author response below. Reviewer text above is unchanged.
+Our method does not assume noise-free progress estimates. Instead, sign-consistent merging and within-response ranking are designed to mitigate estimation noise. Empirically, Figure 5 shows that merging substantially improves PR--KL ranking agreement, supporting the effectiveness of this design.
+\end{responsebox}
+
 \item The results are reported without run-to-run variation or uncertainty estimates. This is a concern because improvements are modest for the second model pair and are not uniform across benchmarks. Repeated runs are needed to distinguish a reliable gain from variation in training and evaluation.
+\par\Needspace{6\baselineskip}
+\begin{responsebox}[frametitle={Response to W5},nobreak=true]
+% Edit the author response below. Reviewer text above is unchanged.
+\textit{[To be completed.]}\par\vspace{1em}
+\end{responsebox}
+
 \end{enumerate}
 
 [1] Akhondzadeh et al. Reward-Gated On-Policy Distillation. arXiv:2607.04037v1, 2026; Section 3.
@@ -35,14 +65,46 @@ See the weaknesses.
 \subsection*{Specific Points of Feedback for Rebuttal}
 \begin{enumerate}
 \item What benefit is specific to the proposed selection rule, compared with simpler ways of using process or outcome rewards?
+\par\Needspace{6\baselineskip}
+\begin{responsebox}[frametitle={Response to Q1},nobreak=true]
+% Edit the author response below. Reviewer text above is unchanged.
+\textit{[To be completed.]}\par\vspace{1em}
+\end{responsebox}
+
 \item Do the improvements hold for larger students and non-Qwen backbones, such as Llama?Does the advantage remain when all methods are allowed longer responses?
+\par\Needspace{6\baselineskip}
+\begin{responsebox}[frametitle={Response to Q2},nobreak=true]
+% Edit the author response below. Reviewer text above is unchanged.
+\textit{[To be completed.]}\par\vspace{1em}
+\end{responsebox}
+
 \item How does R2-OPD compare with RG-OPD and the other relevant baselines on both model pairs?
+\par\Needspace{6\baselineskip}
+\begin{responsebox}[frametitle={Response to Q3},nobreak=true]
+% Edit the author response below. Reviewer text above is unchanged.
+\textit{[To be completed.]}\par\vspace{1em}
+\end{responsebox}
+
 \item How reliable are the progress estimates when the continuation length or number of samples is changed?
+\par\Needspace{6\baselineskip}
+\begin{responsebox}[frametitle={Response to Q4},nobreak=true]
+% Edit the author response below. Reviewer text above is unchanged.
+\textit{[To be completed.]}\par\vspace{1em}
+\end{responsebox}
+
 \item How does selecting segments from the same noisy scores affect the theoretical argument?
+\par\Needspace{6\baselineskip}
+\begin{responsebox}[frametitle={Response to Q5},nobreak=true]
+% Edit the author response below. Reviewer text above is unchanged.
+\textit{[To be completed.]}\par\vspace{1em}
+\end{responsebox}
+
 \end{enumerate}
 
-% ------------------------------------------------------------------
-% Author response: leave blank until the collaborative drafting stage.
-% Uncomment the following heading when ready to write a response.
-% \subsection*{Author Response}
-% TODO: Draft the response to this reviewer here.
+\subsection*{Overall Response}
+\par\Needspace{6\baselineskip}
+\begin{responsebox}[frametitle={Overall Response to Reviewer 4 (hTMj)},nobreak=true]
+% Edit the author response below. Reviewer text above is unchanged.
+\textit{[To be completed.]}\par\vspace{1em}
+\end{responsebox}
+

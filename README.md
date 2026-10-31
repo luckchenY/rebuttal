@@ -23,7 +23,13 @@ is not included.
 All review fields, reviewer-supplied references, ratings, and confidence values
 are retained. Only PDF extraction artifacts and mathematical typesetting have
 been normalized. Reviewer wording, including original spelling, is preserved.
-No author responses or revision proposals have been written.
+The author's 15 existing responses have been placed beneath their corresponding
+weaknesses by matching reviewer ID and comment text, rather than backup order.
+Five unanswered weaknesses, the specific rebuttal questions, and each review's
+overall response remain available for collaborative drafting. The AI appendix
+also has response boxes for its weaknesses, suggestions, and minor issues.
+No new author arguments, factual claims, or aggregate replies have been drafted.
+The GPQA-Diamond Markdown table in the supplied response is typeset as a table.
 
 ## Edit together in Overleaf
 
@@ -32,8 +38,9 @@ No author responses or revision proposals have been written.
   GitHub changes from the project's GitHub synchronization controls.
 - Alternatively, create an Overleaf project by importing the supplied source ZIP.
 - Edit the corresponding reviewers/reviewerN.tex file for each reviewer.
-- A commented Author Response heading is available at the end of each human
-  review file. Uncomment it when the response drafting stage begins.
+- Edit the text inside each responsebox environment beneath the relevant
+  weakness (W1, W2, ...), rebuttal question (Q1, Q2, ...), or overall response.
+- Replace [To be completed.] in empty boxes as further replies are drafted.
 
 The source OpenReview page is https://openreview.net/forum?id=seo1uoXD9Z .
 This working document was transcribed from the PDF supplied by the author.

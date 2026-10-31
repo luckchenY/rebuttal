@@ -8,13 +8,31 @@
 \usepackage{xcolor}
 \usepackage{hyperref}
 \usepackage{fancyhdr}
+\usepackage{mdframed}
 
 \definecolor{linkblue}{HTML}{245579}
+\definecolor{replyblue}{HTML}{356FA3}
+\definecolor{replyfill}{HTML}{F1F6FB}
+\newmdenv[
+  linewidth=0.6pt,
+  linecolor=replyblue,
+  backgroundcolor=replyfill,
+  innerleftmargin=8pt,
+  innerrightmargin=8pt,
+  innertopmargin=6pt,
+  innerbottommargin=6pt,
+  skipabove=0.6em,
+  skipbelow=0.8em,
+  frametitlefont=\bfseries\small,
+  font=\small,
+  repeatframetitle=true,
+  nobreak=false
+]{responsebox}
 \hypersetup{
   colorlinks=true,
   linkcolor=linkblue,
   urlcolor=linkblue,
-  pdftitle={Beyond Imitation -- Reviewer Comments},
+  pdftitle={Beyond Imitation -- Response to Reviewers},
   pdfauthor={}
 }
 \setlength{\parindent}{0pt}
@@ -25,14 +43,14 @@
 \pagestyle{fancy}
 \fancyhf{}
 \fancyhead[L]{\small Beyond Imitation}
-\fancyhead[R]{\small Reviewer Comments}
+\fancyhead[R]{\small Responses to Reviewers}
 \fancyfoot[C]{\thepage}
 \renewcommand{\headrulewidth}{0.3pt}
 \raggedbottom
 
 \title{\Large Beyond Imitation: Filtering On-Policy Distillation\\
 by Reasoning Progress\\[0.65em]
-\LARGE Reviewer Comments}
+\LARGE Response to Reviewers}
 \author{}
 \date{}
 
@@ -46,7 +64,10 @@ The five official human reviews are reproduced in their order in the supplied
 OpenReview PDF. Reviewer numbers are local labels for this working document;
 the original anonymous reviewer IDs are retained below.
 The separate AI review is included in Appendix~\ref{reviewer:ai}.
-Author responses will be drafted later.
+Blue boxes contain the author's existing draft responses or space for further
+drafting. Every weakness and rebuttal question has a corresponding response box.
+Each review ends with an overall response box. Unfilled boxes are marked
+\textit{To be completed.}
 
 \begin{center}
 \begin{tabular}{lccc}
