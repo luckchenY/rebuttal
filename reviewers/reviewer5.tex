@@ -22,14 +22,30 @@ The two central design choices, the masking ratio and the merging step, both get
 \item[W1] Three of the four cited recent baselines score below the untrained student itself, and this is never addressed. In Table 1, the plain Student baseline gets 29.67 avg@4 and 46.10 pass@4, but E OPD [1] gets 26.91 and 41.52, TIP OPD [2] gets 25.80 and 38.72, and IW OPD [3] gets 27.31 and 40.81, all clearly worse than doing no distillation at all. These three methods were each proposed in their own papers specifically to improve on plain on policy distillation, so it is quite surprising that in this paper's reimplementation they end up hurting the model relative to not training it. This could be a real property of these methods under this particular teacher and data setup, but it could just as easily be a sign that these baselines were not tuned or reproduced fairly, and the paper gives no discussion either way. Since R2 OPD's headline comparison rests on beating these same baselines, this is a fairly central concern rather than a side note.
 \par\Needspace{6\baselineskip}
 \begin{responsebox}[frametitle={Response to W1}]
-% Edit the author response below. Reviewer text above is unchanged.
+%帮我补充一下回答，训练的参数都是R2-OPD一样，每个方法特有的参数都和原文的主实验一样。
 We hypothesize that the performance gap partly reflects differences in reasoning regimes. E-OPD and TIP-OPD preserve or prioritize uncertain tokens, which may encourage additional exploration without improving answer quality in thinking-enabled models. IW-OPD downweights later tokens based on accumulated teacher--student discrepancy, potentially suppressing useful verification and correction in long reasoning traces. These effects may be amplified by our response-length limit.
 \end{responsebox}
 
 \item[W2] The benchmarks driving the main comparisons are small, and there is no measure of statistical spread anywhere. AIME 2024 and AIME 2025 each contain only 30 problems, so avg@4 on either one is an average over a small number of underlying items, and a swing of a few accuracy points can come down to one or two problems flipping. No seeds, no repeated runs, and no confidence intervals are reported for any of the main table or ablation numbers. This matters more here than usual because some of the internal ablation swings are enormous for a 30-problem benchmark; for instance, Table 3 shows removing sign-consistent merging drops AIME 2024 accuracy from 32.50 to 17.5, a fifteen-point swing from one design change. A swing that large on a benchmark that small is at least as consistent with high variance as with a real underlying effect, and without any variance reporting there is no way to tell the two apart.
 \par\Needspace{6\baselineskip}
 \begin{responsebox}[frametitle={Response to W2}]
-% Edit the author response below. Reviewer text above is unchanged.
+We add one benchmark GPQA-Diamond: avg@4 / pass@4 (\%)
+
+\begin{center}
+\begin{tabular}{lccc}
+\hline
+Model & Student & OPD & R\textsuperscript{2}-OPD \\
+\hline
+Qwen2.5 & 33.46/67.17 & 35.23/67.68 & 36.24/69.19 \\
+Qwen3 & 36.62/59.09 & 39.52/66.16 & 41.04/65.66 \\
+\hline
+\end{tabular}
+\end{center}
+
+Also, to assess generalization to a larger, non-Qwen setting, we added an 8B Llama-based model pair (DeepSeek-R1-Distill-Llama-8B and Llama-3.1-Nemotron-Nano-8B-v1), with a 32k evaluation limit for all methods. R²-OPD improves four-benchmark mean Avg@4/pass@4 over OPD by 1.94/2.95 percentage points. On Olympiad and GPQA, the respective gains are 5.27/3.41 and 1.64/5.05 points. Pass@4 improves or ties on all four benchmarks; Avg@4 improves on three, with a 1.67-point decrease on AIME25. These results provide additional evidence that our method extends beyond the original Qwen-based settings.
+
+
+
 \vspace*{2\baselineskip}
 \end{responsebox}
 
@@ -58,7 +74,7 @@ Can you say more about how E OPD, TIP OPD, and IW OPD were configured and tuned 
 
 \par\Needspace{6\baselineskip}
 \begin{responsebox}[frametitle={Response to Q1}]
-% Edit the author response below. Reviewer text above is unchanged.
+
 \vspace*{2\baselineskip}
 \end{responsebox}
 
