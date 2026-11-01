@@ -19,7 +19,9 @@ This paper proposes R2-OPD, a selective on-policy distillation method motivated 
 \item The method combines existing ideas from progress-based supervision and reward-guided distillation [1,2]. Its main distinction is using estimated progress to select individual reasoning spans, which appears to be a relatively narrow methodological extension.
 \par\Needspace{6\baselineskip}
 \begin{responsebox}[frametitle={Response to W1}]
-Regarding the method novelty, we acknowledge that \textcolor{red}{briefly summarize what happen in ref 1 and 2}. While our approach takes a different approach in defining and extracting progress reward. Moreover, we show empirical techniques such as \textcolor{red}{Add techniques here}. More interestingly, simulations results show \textcolor{red}{under which conditions}, \textcolor{red}{our method shows xxx\% increase, while such cases are unique and showing important implications for reasoning steps in OPD.}
+% Regarding the method novelty, we acknowledge that \textcolor{red}{briefly summarize what happen in ref 1 and 2}. While our approach takes a different approach in defining and extracting progress reward. Moreover, we show empirical techniques such as \textcolor{red}{Add techniques here}. More interestingly, simulations results show \textcolor{red}{under which conditions}, \textcolor{red}{our method shows xxx\% increase, while such cases are unique and showing important implications for reasoning steps in OPD.
+[1] gates whole trajectories through verifier–likelihood agreement; [2] uses changes in solve probability for progress-based policy improvement. We build on these ideas, but introduce a within-trajectory, span-level reliability criterion. Sign-consistent merging and segment-level loss averaging support progress–distillation rank comparisons, which determine local masking of teacher supervision. This targets conflicting guidance within trajectories containing both productive and regressive spans (Fig. 2). With DeepSeek-R1-Distill-Qwen-1.5B/JustRL, aggregate avg@4/pass@4 improve by 2.51/4.46 percentage points over OPD (Table 1).
+}
 % Edit the author response below. Reviewer text above is unchanged.
 \vspace*{2\baselineskip}
 \end{responsebox}
@@ -27,10 +29,12 @@ Regarding the method novelty, we acknowledge that \textcolor{red}{briefly summar
 \item Both evaluated students are small Qwen-derived models. This makes it difficult to tell whether the gains extend beyond these particular models. Results on another model family, such as Llama, and larger students would be needed to support broader claims. All evaluations use a single response-length limit. The paper does not show whether the gains remain when longer reasoning is allowed. RG-OPD is closely related to the proposed method but is not included in the experiments [1]. Comparisons with the closest existing methods and simpler reward-based filters are needed.
 \par\Needspace{6\baselineskip}
 \begin{responsebox}[frametitle={Response to W2}]
-% Edit the author response below. Reviewer text above is unchanged.
+
+
+We thank the reviewer for highlighting RG-OPD and agree that it is an important baseline. RG-OPD gates trajectory-level distillation through agreement between reward-derived advantages and teacher–student log-likelihood gaps. Our Uni-OPD margin-mask baseline also uses outcome feedback, but selects trajectories using correct–incorrect return margins within each prompt group. R²-OPD instead filters reasoning spans using progress–distillation rank conflicts. Due to time constraints, we could not include a direct RG-OPD comparison in this rebuttal. We acknowledge this limitation and will expand Related Work to discuss RG-OPD more thoroughly and carefully clarify these connections and differences.
+
 \vspace*{2\baselineskip}
 \end{responsebox}
-
 \item The filter relies on progress estimates from continuations limited to 300 tokens. It is unclear whether these short, answer-eliciting completions reliably reflect how much a reasoning step contributes to solving the problem. The paper does not examine how these estimates change with the continuation length or number of samples. Estimating progress requires additional generations from multiple prefixes of each eligible trajectory. The paper does not report the full cost of this procedure, so training each method for the same number of epochs does not establish equal resource use.
 \par\Needspace{6\baselineskip}
 \begin{responsebox}[frametitle={Response to W3}]
