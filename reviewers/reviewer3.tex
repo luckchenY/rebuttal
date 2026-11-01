@@ -60,8 +60,9 @@ See above weaknesses.
 We thank the reviewer for the constructive feedback and for recognizing the motivation behind addressing the misalignment between teacher supervision and genuine reasoning progress in standard OPD.
 Regarding computational overhead, due to time constraints, we analyzed six sampled batches. PR was evaluated for only 103/192 responses. Those without successful segmentation or explicit ground-truth answer matches bypassed PR estimation and remained unfiltered. Eligible responses averaged 214.8 short continuations (eight per non-final prefix, each capped at 300 new tokens), with high KV-cache hit rates. PR estimation and consistency checking increased runtime by an estimated 118.4% compared with the inferred baseline without these procedures.
 Regarding supervision requirements, ground-truth answers and task-specific verifiers restrict R²-OPD to verifiable domains. However, beyond filtering or reweighting trajectories based on outcome correctness, R²-OPD estimates marginal progress and compares its relative ranking with distillation losses to identify locally unreliable distillation signals. We will try to explore verifier-free progress estimation.
-Finally, Figure 5 shows that sign-consistent merging improves PR–KL ranking agreement, helping showing conflicts change in teacher supervision. We agree that further analyses of progress estimates themselves and downstream performance throughout training would be valuable. The masking ratio remains fixed throughout training.
+Finally, Figure 5 shows that sign-consistent merging improves PR--KL ranking agreement, helping showing conflicts change in teacher supervision. We agree that further analyses of progress estimates themselves and downstream performance throughout training would be valuable. The masking ratio remains fixed throughout training.
 
 \vspace*{4\baselineskip}
 \end{responsebox}
+
 
