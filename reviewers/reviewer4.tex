@@ -111,7 +111,15 @@ See the weaknesses.
 \subsection*{Final Response for Submission}
 \par\Needspace{9\baselineskip}
 \begin{responsebox}[frametitle={Final Response to Reviewer 4 (hTMj)},linecolor=finalgreen,backgroundcolor=finalfill]
-% Edit the author response below. Reviewer text above is unchanged.
+
+Thank you for highlighting RG-OPD as an important related method and baseline. RG-OPD gates distillation by agreement between reward-derived advantages and teacher–student likelihood gaps. We share its goal of filtering unreliable guidance. Building on Rewarding Progress, we use changes in prefix solve probability to detect within-trajectory rank conflicts with span-averaged KL. Progress filters OPD supervision, rather than serving as a policy-improvement reward. This targets local conflicts among productive and regressive spans (Fig. 2). Uni-OPD offers an outcome-based filtering baseline using correct–incorrect return margins, but differs from RG-OPD. We acknowledge the missing direct comparison and will expand Related baseline to clarify these connections.
+
+The added Llama-based 8B pair, evaluated at 32k for all methods, gains 1.94/2.95 points in four-benchmark mean avg@4/pass@4 over OPD. Pass@4 improves or ties on all four; AIME25 avg@4 drops 1.67 points.
+
+The 300-token prompt elicits answers from current prefixes (App. B.5). Fig. 5 shows that merging improves PR–KL rank agreement. Across six sampled batches, PR was estimated for 103/192 responses, averaging 214.8 short continuations per eligible response. Estimation/checking adds an estimated 118.4\% overhead over the inferred step-time baseline. 
+
+
+
 \vspace*{4\baselineskip}
 \end{responsebox}
 

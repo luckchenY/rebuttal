@@ -117,14 +117,14 @@ in both. These evaluations do not provide training-seed uncertainty estimates.
 \subsection*{Final Response for Submission}
 \par\Needspace{9\baselineskip}
 \begin{responsebox}[frametitle={Final Response to Reviewer 1 (gURK)},linecolor=finalgreen,backgroundcolor=finalfill]
-% Consolidated response, using only supplied information; no new experiments promised.
-% Plain text length: 109 whitespace-separated words; 868 characters including spaces and paragraph breaks.
-R\textsuperscript{2}-OPD uses teacher-independent progress to filter span-level supervision through progress--distillation rank conflicts. Merging is intended to stabilize these comparisons; Lemma 1 and Proposition 2 support aggregation under their stated assumptions.
 
-The added 32-sample evaluations improve over OPD by 2.92--3.34 percentage points in avg@32 and about 3.3 in pass@32. GPQA-Diamond avg@4 gains are 1.01/1.52 points for Qwen2.5/Qwen3 (pass@4: +1.51/\ensuremath{-}0.50), extending the evidence beyond mathematics.
+Thank you for recognizing the clear motivation, straightforward design and constructive feedback.
+Evaluation stability. On AIME24/25, avg@32 rises from 26.56/20.21 (OPD) to 29.90/23.13 (+3.34/+2.92 percentage points); pass@32 gains are about 3.3 points each.
+Additional benchmark: GPQA-Diamond.For Qwen2.5/Qwen3, avg@4 rises from 35.23/39.52 (OPD) to 36.24/41.04, extending evaluation beyond mathematics.
+Larger model and different family: 8B Llama. With DeepSeek-R1-Distill-Llama-8B and Llama-3.1-Nemotron-Nano-8B-v1, all methods use a 32k evaluation limit. Mean avg@4/pass@4 across four benchmarks improves over OPD by 1.94/2.95 percentage points; avg@4 improves on three benchmarks, and pass@4 improves or ties on all four.
+Contribution and supporting evidence. R²-OPD masks span-level supervision using within-response rank conflicts between teacher-independent progress and KL loss, retaining the OPD objective. Fig. 5 shows merging improves ranking agreement; Lemma 1 and Proposition 2 support aggregation under their stated assumptions.
+Baseline settings. Common training settings match ours; method-specific hyperparameters follow the original main experiments. E-/TIP-OPD may encourage extra exploration, while IW-OPD may suppress late verification; these remain hypotheses.
+Teacher choice. Following arXiv:2604.13016, we chose JustRL for compatible thinking patterns and new reasoning capabilities from additional RL training. Despite the shared base, Fig. 2 shows regressive spans receiving lower KL than productive spans.
 
-E-/TIP-OPD may favor additional exploration, while IW-OPD may suppress later verification in long traces. These remain hypotheses. Our teacher shares the student's base and has additional RL post-training.
-
-We acknowledge the limited ablations and absence of controlled length/truncation analyses, post-answer masking statistics, and training-seed uncertainty estimates.
 \end{responsebox}
 

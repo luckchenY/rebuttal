@@ -78,7 +78,19 @@ meaningful problem yet constrained by the outdated model \& dataset selection
 \subsection*{Final Response for Submission}
 \par\Needspace{9\baselineskip}
 \begin{responsebox}[frametitle={Final Response to Reviewer 2 (4R1c)},linecolor=finalgreen,backgroundcolor=finalfill]
-% Edit the author response below. Reviewer text above is unchanged.
+Thank you for recognizing the problem's importance and the convincing failure case in Fig. 2.
+
+Additional benchmark: GPQA-Diamond. Avg@4 improves over OPD by 1.01/1.52 points for Qwen2.5/Qwen3, extending evaluation beyond mathematics.
+Larger model and different family. We added DeepSeek-R1-Distill-Llama-8B as student and Llama-3.1-Nemotron-Nano-8B-v1 as teacher, with a 32k evaluation limit for all methods. Four-benchmark mean avg@4/pass@4 gains over OPD are 1.94/2.95 percentage points; on GPQA, gains are 1.64/5.05 points.
+
+
+Cost: Across six sampled batches, progress estimation covered 103/192 responses. Overall, it added 115.7 short rollouts per original response (including padding; each capped at 300 tokens). Progress estimation and consistency checks added an estimated 118.4% runtime over the inferred baseline.
+
+Sensitivity: q controls the fraction of masked segments. Aggressive masking may remove useful supervision or amplify ranking errors.
+
+Position: Exploratory replay of 256 trajectories found that, among 39 correct trajectories with masked spans, 59.8 of masked tokens preceded the final third; overlap with a late-only mask using the same token budget was 19.6%.
+
+Related work: Prune-OPD addresses prefix drift; Teachability-Aware OPD uses token-level compatibility. We filter spans by rank conflicts between teacher-independent progress and distillation loss, retaining the OPD objective.
 \vspace*{4\baselineskip}
 \end{responsebox}
 
